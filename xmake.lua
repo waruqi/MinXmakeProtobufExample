@@ -25,7 +25,7 @@ add_requireconfs( "*", { configs = { shared = get_config( "kind" ) == "shared" }
 add_requires( "protobuf-cpp" )
 -- protobuf-* needs it and somehow just doesn't publicizes the linkage
 --add_requires( "abseil" )
---add_requires( "utf8_range" )
+add_requires( "utf8_range" )
 
 target( "MinExample" )
     set_kind( "binary" )
@@ -35,7 +35,7 @@ target( "MinExample" )
     add_packages( "protobuf-cpp", { public = true } )
     -- protobuf-* needs it and somehow just doesn't publicizes the linkage
     --add_packages( "abseil", { public = true } )
-    --add_packages( "utf8_range", { public = true } )
+    add_packages( "utf8_range", { public = true } )
 
     add_rules( "protobuf.cpp" )
 
