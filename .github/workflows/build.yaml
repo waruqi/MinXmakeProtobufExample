@@ -95,21 +95,11 @@ jobs:
     - name: Install
       run: xmake install -vDo dest/ --group=EXES
 
-    - name: ls install directory
+    - uses: actions/upload-artifact@v4
       if: ${{ matrix.platform.os == 'windows' }}
-      run: ls dest/
-
-    - name: ls install/bin directory
-      if: ${{ matrix.platform.os == 'windows' }}
-      run: ls dest/bin/
-
-    - name: dumpbin
-      if: ${{ matrix.platform.os == 'windows' }}
-      run: |
-        Invoke-Environment "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
-        dumpbin /dependents dest/bin/MinExample.exe
-        cd dest/bin/
-        dumpbin /dependents MinExample.exe
+      with:
+        name: ${{ env.OUTPUT_FILE }}
+        path: dest/
 
     - name: Run tests (in this case the single exe)
       run: xmake run -vD --group=EXES
