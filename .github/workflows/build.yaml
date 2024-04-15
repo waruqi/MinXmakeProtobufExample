@@ -105,8 +105,11 @@ jobs:
 
     - name: dumpbin
       if: ${{ matrix.platform.os == 'windows' }}
-      run: '"C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"; dumpbin /dependents dest/bin/MinExample.exe; cd dest/bin/; dumpbin /dependents MinExample.exe'
-      shell: cmd
+      run: |
+        Invoke-Environment "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvars64.bat"
+        dumpbin /dependents dest/bin/MinExample.exe
+        cd dest/bin/
+        dumpbin /dependents MinExample.exe
 
     - name: Run tests (in this case the single exe)
       run: xmake run -vD --group=EXES
