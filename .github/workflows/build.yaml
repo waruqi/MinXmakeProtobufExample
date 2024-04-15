@@ -96,10 +96,16 @@ jobs:
       run: xmake install -vDo dest/ --group=EXES
 
     - name: ls install directory
+      if: ${{ matrix.platform.os == 'windows' }}
       run: ls dest/
 
     - name: ls install/bin directory
+      if: ${{ matrix.platform.os == 'windows' }}
       run: ls dest/bin/
+
+    - name: dumpbin
+      if: ${{ matrix.platform.os == 'windows' }}
+      run: dumpbin /dependents your_dll_file.dll dest/bin/MinExample.exe
 
     - name: Run tests (in this case the single exe)
       run: xmake run -vD --group=EXES
