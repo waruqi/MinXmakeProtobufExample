@@ -1,0 +1,8 @@
+syntax = "proto3";
+
+package Test.Proto;
+
+message Message {
+  string Name = 1;
+  string String = 2;
+}
