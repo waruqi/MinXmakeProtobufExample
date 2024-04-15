@@ -92,13 +92,18 @@ jobs:
     - name: Build all targets
       run: xmake build -vD -a
 
+    - name: Install
+      run: xmake install -vDo dest/ --group=EXES
+
+    - name: ls install directory
+      run: ls dest/
+
+    - name: ls install/bin directory
+      run: ls dest/bin/
+
     - name: Run tests (in this case the single exe)
       run: xmake run -vD --group=EXES
 
-    - name: Install
-      run: xmake install -vDo dest/ --group=EXES
-      shell: bash
-    
     - name: Archive result
       uses: ihiroky/archive-action@v1
       with:
