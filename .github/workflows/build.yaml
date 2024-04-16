@@ -105,12 +105,7 @@ jobs:
       if: ${{ matrix.platform.os == 'windows' }}
       run: 'cd dest/bin/ && MinExample.exe'
       shell: cmd
-
-    - name: Try to run single exe (in build folder)
-      if: ${{ matrix.platform.os == 'windows' }}
-      run: 'cd build/windows/x64/release/ && MinExample.exe'
-      shell: cmd
-
+      
     - name: Run tests (in this case the single exe)
       run: xmake run -vD --group=EXES
 
