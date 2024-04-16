@@ -41,3 +41,11 @@ target( "MinExample" )
 
     add_files( "proto/*.proto", { proto_public = false } )
     add_files( "src/*.cpp" )
+
+    before_run(function (target)
+        import("private.action.run.runenvs")
+        local addenvs, setenvs = runenvs.make(target)
+        print("addenvs", addenvs)
+        print("setenvs", setenvs)
+
+    end)
