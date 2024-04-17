@@ -47,4 +47,10 @@ target( "MinExample" )
         local addenvs, setenvs = runenvs.make(target)
         print("addenvs", addenvs)
         print("setenvs", setenvs)
+
+        print("dump pkgs")
+        for _, pkg in ipairs(target:orderpkgs()) do
+            print(pkg:name())
+            pkg:dump()
+        end
     end)
