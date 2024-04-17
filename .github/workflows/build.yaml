@@ -60,7 +60,7 @@ jobs:
       run: xmake repo --update -vD
 
     - name: Build all targets
-      run: xmake build -vD -a
+      run: xmake build -vD -a -y
 
     - name: Install
       run: xmake install -vDo dest/ --group=EXES
