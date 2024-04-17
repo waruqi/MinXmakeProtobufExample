@@ -52,7 +52,7 @@ jobs:
     - name: Setup xmake
       uses: xmake-io/github-action-setup-xmake@v1.2.2
       with:
-        xmake-version: branch@runenvs
+        xmake-version: branch@dev
         actions-cache-folder: .xmake-cache-W${{ steps.cache_key.outputs.key }}
 
     # Update xmake repository (in order to have the file that will be cached)
@@ -61,13 +61,20 @@ jobs:
 
     - name: Configure xmake and install dependencies (Windows)
       if: ${{ matrix.platform.os == 'windows' }}
-      run: xmake config -vD --arch=${{ matrix.platform.arch }} --mode=${{ matrix.mode }} --kind=${{ matrix.libkind }} --vs_runtime=${{ matrix.platform.vs_runtime }} --yes --policies=package.precompiled:n
-
-    - name: Build all targets
-      run: xmake build -vD -a -y
-
-    - name: Install
-      run: xmake install -vDo dest/ --group=EXES
+      run: |
+        git clone https://github.com/xmake-io/xmake.git --recurse-submodules -b runenvs xmakesrc
+        cd xmakesrc/core
+        xmake
+        cd ../..
+        Copy-Item ./xmakesrc/core/build/xmake.exe ./xmakesrc/xmake
+        Copy-Item ./xmakesrc/scripts/xrepo.bat ./xmakesrc/xmake
+        Copy-Item ./xmakesrc/scripts/xrepo.ps1 ./xmakesrc/xmake
+        $Env:XMAKE_MAIN_REPO = "https://github.com/xmake-io/xmake-repo.git"
+        $Env:XMAKE_PROGRAM_DIR = $(Resolve-Path ./xmakesrc/xmake)
+        Set-Item -Path Env:Path -Value ($Env:XMAKE_PROGRAM_DIR + ";" + $Env:Path)
+        xmake config -vD --arch=${{ matrix.platform.arch }} --mode=${{ matrix.mode }} --kind=${{ matrix.libkind }} --vs_runtime=${{ matrix.platform.vs_runtime }} --yes --policies=package.precompiled:n
+        xmake build -vD -a -y
+        xmake install -vDo dest/ --group=EXES
 
     - uses: actions/upload-artifact@v4
       if: ${{ matrix.platform.os == 'windows' }}
