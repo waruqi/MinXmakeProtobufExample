@@ -59,6 +59,10 @@ jobs:
     - name: Update xmake repository
       run: xmake repo --update -vD
 
+    - name: Configure xmake and install dependencies (Windows)
+      if: ${{ matrix.platform.os == 'windows' }}
+      run: xmake config -vD --arch=${{ matrix.platform.arch }} --mode=${{ matrix.mode }} --kind=${{ matrix.libkind }} --vs_runtime=${{ matrix.platform.vs_runtime }} --yes --policies=package.precompiled:n
+
     - name: Build all targets
       run: xmake build -vD -a -y
 
