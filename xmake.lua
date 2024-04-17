@@ -32,10 +32,10 @@ target( "MinExample" )
     set_default( true )
     set_group( "EXES" )
 
-    add_packages( "protobuf-cpp", { public = true } )
+    add_packages( "protobuf-cpp" )
     -- protobuf-* needs it and somehow just doesn't publicizes the linkage
     --add_packages( "abseil", { public = true } )
-    add_packages( "utf8_range", { public = true } )
+    add_packages( "utf8_range" )
 
     add_rules( "protobuf.cpp" )
 
