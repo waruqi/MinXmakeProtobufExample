@@ -59,36 +59,6 @@ jobs:
     - name: Update xmake repository
       run: xmake repo --update -vD
 
-    # Fetch xmake dephash
-    - name: Retrieve dependencies hash
-      id: dep_hash
-      run: echo "hash=$(xmake l utils.ci.packageskey)" >> $GITHUB_OUTPUT
-      shell: bash
-
-    # Retrieve xmake dependencies
-    - name: Restore cached xmake dependencies
-      id: restore-depcache
-      uses: actions/cache/restore@v4
-      with:
-        path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
-        key: ${{ matrix.platform.os }}-${{ matrix.platform.arch }}-${{ matrix.mode }}-${{ matrix.libkind }}-${{ matrix.platform.vs_runtime }}-${{ steps.dep_hash.outputs.hash }}-W${{ steps.cache_key.outputs.key }}
-
-    - name: Configure xmake and install dependencies (Unix)
-      if: ${{ matrix.platform.os != 'windows' }}
-      run: xmake config -vD --arch=${{ matrix.platform.arch }} --mode=${{ matrix.mode }} --kind=${{ matrix.libkind }} --yes --policies=package.precompiled:n
-
-    - name: Configure xmake and install dependencies (Windows)
-      if: ${{ matrix.platform.os == 'windows' }}
-      run: xmake config -vD --arch=${{ matrix.platform.arch }} --mode=${{ matrix.mode }} --kind=${{ matrix.libkind }} --vs_runtime=${{ matrix.platform.vs_runtime }} --yes --policies=package.precompiled:n
-
-    # Save dependencies
-    - name: Save cached xmake dependencies
-      if: ${{ !steps.restore-depcache.outputs.cache-hit }}
-      uses: actions/cache/save@v4
-      with:
-        path: ${{ env.XMAKE_GLOBALDIR }}/.xmake/packages
-        key: ${{ steps.restore-depcache.outputs.cache-primary-key }}
-
     - name: Build all targets
       run: xmake build -vD -a
 
