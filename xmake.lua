@@ -22,7 +22,7 @@ end
 
 add_requireconfs( "*", { configs = { shared = get_config( "kind" ) == "shared" } } )
 
-add_requires( "protobuf-cpp" )
+add_requires( "protobuf-cpp", { configs = { shared = get_config( "kind" ) == "shared" } } )
 -- protobuf-* needs it and somehow just doesn't publicizes the linkage
 --add_requires( "abseil" )
 add_requires( "utf8_range" )
