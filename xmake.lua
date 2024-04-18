@@ -44,13 +44,8 @@ target( "MinExample" )
 
     before_run(function (target)
         import("private.action.run.runenvs")
+        print("PATH", os.getenv("PATH"))
         local addenvs, setenvs = runenvs.make(target)
         print("addenvs", addenvs)
         print("setenvs", setenvs)
-
-        print("dump pkgs")
-        for _, pkg in ipairs(target:orderpkgs()) do
-            print(pkg:name())
-            pkg:dump()
-        end
     end)
